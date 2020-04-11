@@ -1,0 +1,210 @@
+﻿<Window x:Class="RCModelColors.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RCModelColors"
+        xmlns:uc="clr-namespace:RCModelColors.Controls"
+        mc:Ignorable="d"
+        Title="RC_Model_Color_v0.51" Height="450" Width="500"
+        DataContext="local:MainWindowViewModel">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0,0.5" StartPoint="1,0.5">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="White" Offset="0.5"/>
+                <GradientStop Color="#FF2F5597" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="upperGrid" 
+              Grid.Row="0"
+              Margin="7"
+              Height="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Image Source=".\Images\RC_White.png"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock x:Name="TeklaModelPath" 
+                           Text="Tekla Model Path" 
+                           FontSize="10"/>
+                <TextBlock x:Name="TeklaModelName" 
+                           Text="ModelName" />
+
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="buttonsGrid" 
+              Grid.Row="1"
+              Background="#BBDAE3F3"
+              Margin="7"
+              Height="100">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Button
+                x:Name="ReadWholeModel"
+                Grid.Row="0"
+                Click="ReadWholeModel_Click">
+                    <TextBlock Text="Read profiles from whole model"/>
+                </Button>
+                <Button
+                x:Name="ReadSelectedElements"
+                Grid.Row="1"
+                Click="ReadSelectedElements_Click"
+                >
+                    <TextBlock Text="Read profiles from selected elements"/>
+                </Button>
+            </Grid>
+            <Button
+                x:Name="ShuffleColors"
+                Grid.Column="1"
+                Grid.RowSpan="2"
+                Click="ShuffleColors_Click"
+                HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Shuffle color palette"/>
+                </StackPanel>
+            </Button>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="RepFileName"
+                         Grid.Row="0" 
+                         Grid.Column="0" 
+                         Grid.ColumnSpan="2"
+                         Text="RC_Model_Color" />
+                <Button
+                x:Name="CreateModelFilter"
+                Click="CreateModelFilter_Click"
+                Grid.Row="1" Grid.Column="0">
+                    <TextBlock Text="Create model filter"/>
+                </Button>
+                <StackPanel 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Center">
+                    <CheckBox 
+                        x:Name="applyFilterCheckBox"
+                        IsChecked="True"/>
+                    <TextBlock 
+                        Text="and apply"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Expander Grid.Row="2"
+                  Background="#BBDAE3F3">
+            <Expander.Header>
+                <TextBlock Text="Настройки"/>
+            </Expander.Header>
+            <StackPanel>
+                <Grid Margin="7,1"
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Plates Prefixes" Grid.Column="0"/>
+                    <TextBox x:Name="PlatesPrefixes"
+                             Grid.Column="1"
+                             Text="BL, BPL, FB, FL, FLT, FPL, PL, PLATE, —, ПВ, Полоса, Риф, ЧРиф"
+                             LostFocus="PlatesPrefixes_LostFocus"
+                             TextWrapping="Wrap"
+                             HorizontalScrollBarVisibility="Hidden"
+                             HorizontalAlignment="Stretch"/>
+                    <StackPanel Grid.Column="2">
+                        <CheckBox x:Name="IgnorePlates"
+                                  IsChecked="True"/>
+                        <TextBlock Text="ignore plates"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Margin="7,1"
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Ignored Prefixes" Grid.Column="0" />
+                    <TextBox x:Name="IgnoredPrefixes"
+                             Grid.Column="1"
+                             Text="NUT, WASHER"
+                             LostFocus="IgnoredPrefixes_LostFocus"
+                             TextWrapping="Wrap"
+                             HorizontalScrollBarVisibility="Hidden"
+                             HorizontalAlignment="Stretch"/>
+                </Grid>
+
+                <Grid x:Name="slidersGrid"
+                      Margin="7,1"
+                      Background="#BBDAE3F3"
+                      Height="25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="SaturationSlider"
+                            Value="70"
+                            LostMouseCapture="ColorSlider_LostMouseCapture"
+                            Maximum="100"
+                            Minimum="0"
+                            Background="{StaticResource SaturationGradient}"
+                            SmallChange="1"
+                            LargeChange="10"
+                            Grid.Column="0"
+                            Grid.Row="2"
+                            Margin="2,0"
+                            VerticalAlignment="Center">
+                    </Slider>
+                    <Slider x:Name="LightnessSlider"
+                            Value="60"
+                            LostMouseCapture="ColorSlider_LostMouseCapture"
+                            Maximum="100" Minimum="0"
+                            Background="{StaticResource LightnessGradient}"
+                            SmallChange="1" 
+                            LargeChange="10"
+                            Grid.Column="1"
+                            Grid.Row="2"
+                            Margin="2,0"
+                            VerticalAlignment="Center">
+                    </Slider>
+
+                </Grid>
+
+            </StackPanel>
+        </Expander>
+        <ListView x:Name="PropItemListView" 
+                      Margin="7" 
+                      Background="#BBDAE3F3"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      Grid.Row="3">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <uc:PropItemControl PropItem="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>
