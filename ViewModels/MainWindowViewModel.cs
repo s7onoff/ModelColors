@@ -12,6 +12,8 @@ namespace RCModelColors
 {
     public class MainWindowViewModel: INotifyPropertyChanged 
     {
+        #region Props
+
         private double lightness;
 
         public double Lightness
@@ -42,7 +44,19 @@ namespace RCModelColors
             }
         }
 
+        private string[] platesPrefixes;
 
+        public string[] PlatesPrefixes
+        {
+            get { return platesPrefixes; }
+            set 
+            {
+                platesPrefixes = value;
+                INotifyPropertyChanged(nameof(PlatesPrefixes));
+            }
+        }
+
+        #endregion
 
         public ICommand ButtonCommand { protected get; set; }
 
