@@ -35,8 +35,6 @@ namespace RCModelColors
             {
                 TeklaModelPath.Text = App.teklaModelPath;
                 TeklaModelName.Text = App.teklaModelName;
-                //ConnectionStatusText.Text = "OK";
-                //ConnectionStatusText.Background = (SolidColorBrush)(new BrushConverter().ConvertFromString("Lime"));
             }
 
             RefreshTable();

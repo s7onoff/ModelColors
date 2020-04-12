@@ -78,19 +78,24 @@ namespace RCModelColors.Classes
 
             foreach(Part part in profilesSet)
             {
+                // check if it is plate
                 if (App.arrayOfPlatePrefixes.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) ||
                             Regex.IsMatch(part.Profile.ProfileString, @"^\d+"))
-                {
-                    //So, this is plate
-                    //double thickness = 0;
-                    //part.GetReportProperty("WIDTH", ref thickness);
-                    
+                {                    
                     double thickness = PlateThickness(part.Profile.ProfileString);
                     DBInteraction.AddPropItem("-" + thickness.ToString());
                 }
                 else
                 {
-                    DBInteraction.AddPropItem(part.Profile.ProfileString);
+                    // check if profile should be ignored
+                    if (App.ignoredPrefixes.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        DBInteraction.AddPropItem(part.Profile.ProfileString);
+                    }
                 }
             }
             sWatch.Stop();

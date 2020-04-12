@@ -42,6 +42,8 @@ namespace RCModelColors
             }
         }
 
+
+
         public ICommand ButtonCommand { protected get; set; }
 
 
