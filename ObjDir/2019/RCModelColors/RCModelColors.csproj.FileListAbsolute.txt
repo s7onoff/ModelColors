@@ -11,7 +11,6 @@ C:\Users\s77\source\repos\RCModelColors\bin\Debug\SQLitePCLRaw.core.dll
 C:\Users\s77\source\repos\RCModelColors\bin\Debug\SQLitePCLRaw.provider.e_sqlite3.dll
 C:\Users\s77\source\repos\RCModelColors\bin\Debug\SQLite-net.xml
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\Controls\PropItemControl.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\MainWindow.g.cs
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\App.g.cs
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors_Content.g.cs
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\GeneratedInternalTypeHelper.g.cs
@@ -19,7 +18,6 @@ C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors_
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors_MarkupCompile.lref
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\App.baml
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\Controls\PropItemControl.baml
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\MainWindow.baml
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors.g.resources
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors.Properties.Resources.resources
 C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors.csproj.GenerateResource.cache
@@ -39,3 +37,6 @@ C:\Users\s77\source\repos\RCModelColors\bin\Release\SQLitePCLRaw.batteries_v2.dl
 C:\Users\s77\source\repos\RCModelColors\bin\Release\SQLitePCLRaw.core.dll
 C:\Users\s77\source\repos\RCModelColors\bin\Release\SQLitePCLRaw.provider.e_sqlite3.dll
 C:\Users\s77\source\repos\RCModelColors\bin\Release\SQLite-net.xml
+C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\Views\MainWindow.g.cs
+C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\Views\MainWindow.baml
+C:\Users\s77\source\repos\RCModelColors\ObjDir\2019\RCModelColors\RCModelColors.csproj.CoreCompileInputs.cache

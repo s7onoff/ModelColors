@@ -1,35 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Tekla.Structures;
-using Tekla.Structures.Model;
-using TSMUI = Tekla.Structures.Model.UI;
 using Tekla.Structures.Filtering;
 using Tekla.Structures.Filtering.Categories;
-using System.Diagnostics;
+using Tekla.Structures.Model;
+using TSMUI = Tekla.Structures.Model.UI;
 
 namespace RCModelColors.Classes
 {
-    static class TeklaInteraction
+    public class TeklaInteraction
     {
-        static Model model = new Model();
-        public static bool Connect()
+        public Model Model { get; set; }
+        public DBInteraction DBInteraction { get; set; }
+        public string[] PlatePrefixesArray { get; set; }
+        public string[] IgnoredPrefixesArray { get; set; }
+        public string ModelName { get; set; }
+        public string ModelPath { get; set; }
+        public bool PlatesIgnored { get; set; }
+        public bool BeamsIgnored { get; set; }
+
+        public TeklaInteraction()
         {
-            if (model.GetConnectionStatus())
+            Model = new Model();
+            DBInteraction = new DBInteraction();
+            Connect();
+        }
+        public bool Connect()
+        {
+            if (Model.GetConnectionStatus())
             {
-                App.teklaModelName = model.GetInfo().ModelName;
-                App.teklaModelPath = model.GetInfo().ModelPath;
-                App.databasePath = System.IO.Path.Combine(App.teklaModelPath, App.databaseName);
+                ModelName = Model.GetInfo().ModelName;
+                ModelPath = Model.GetInfo().ModelPath;
+                DBInteraction.DatabasePath = Path.Combine(ModelPath, "ModelColors.db");
                 return true;
             }
             else return false;
         }
 
-        public static void GetAllProfiles()
+        public void GetAllProfiles()
         {
             DBInteraction.Clear();
 
@@ -37,12 +49,12 @@ namespace RCModelColors.Classes
             Types.SetValue(typeof(Part), 0);
             Types.SetValue(typeof(Tekla.Structures.Model.Boolean), 1);
 
-            ModelObjectEnumerator Enum = model.GetModelObjectSelector().GetAllObjectsWithType(Types);
+            ModelObjectEnumerator Enum = Model.GetModelObjectSelector().GetAllObjectsWithType(Types);
 
             FullFillDB(Enum);
         }
 
-        public static void GetSelectedProfiles()
+        public void GetSelectedProfiles()
         {
             DBInteraction.Clear();
 
@@ -53,17 +65,12 @@ namespace RCModelColors.Classes
             FullFillDB(Enum);
         }
 
-        private static void FullFillDB(ModelObjectEnumerator Enum)
+        private void FullFillDB(ModelObjectEnumerator Enum)
         {
-            var sWatch = new Stopwatch();
-            List<string> PartStringList = new List<string>();
-            
-            sWatch.Start();
-
             HashSet<Part> profilesSet = new HashSet<Part>();
             while (Enum.MoveNext())
             {
-                try 
+                try
                 {
                     Part currentPart = Enum.Current as Part;
                     if (currentPart != null)
@@ -73,22 +80,27 @@ namespace RCModelColors.Classes
                 }
                 catch { Console.WriteLine("Something wrong"); }
             }
-            
-            Console.WriteLine("Profile HashSet fullfilled, time " + sWatch.ElapsedMilliseconds.ToString());
 
-            foreach(Part part in profilesSet)
+            foreach (Part part in profilesSet)
             {
                 // check if it is plate
-                if (App.arrayOfPlatePrefixes.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) ||
+                if (PlatePrefixesArray.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) ||
                             Regex.IsMatch(part.Profile.ProfileString, @"^\d+"))
-                {                    
-                    double thickness = PlateThickness(part.Profile.ProfileString);
-                    DBInteraction.AddPropItem("-" + thickness.ToString());
+                {
+                    if (PlatesIgnored)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        double thickness = PlateThickness(part.Profile.ProfileString);
+                        DBInteraction.AddPropItem("-" + thickness.ToString());
+                    }
                 }
                 else
                 {
                     // check if profile should be ignored
-                    if (App.ignoredPrefixes.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)))
+                    if (IgnoredPrefixesArray.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) || BeamsIgnored)
                     {
                         continue;
                     }
@@ -98,15 +110,13 @@ namespace RCModelColors.Classes
                     }
                 }
             }
-            sWatch.Stop();
-            Console.WriteLine("Database fullfilled, time " + sWatch.ElapsedMilliseconds.ToString());
         }
 
-        public static void CreateFilter(bool applyChecked, string repFileName)
+        public void CreateFilter(bool applyChecked, string repFileName)
         {
-            var attributesPath = Path.Combine(App.teklaModelPath, "attributes");
+            var attributesPath = Path.Combine(ModelPath, "attributes");
 
-            List<PropItem> list = DBInteraction.GetItemsList();
+            List<PropItem> list = DBInteraction.ReadDatabase();
 
             foreach (PropItem item in list)
             {
@@ -116,7 +126,7 @@ namespace RCModelColors.Classes
                 BinaryFilterExpressionCollection expressionCollection;
 
                 if (item.Name.StartsWith("-"))
-                { expressionCollection = CreateFilterForPlate(item.Name.Replace("-","")); }
+                { expressionCollection = CreateFilterForPlate(item.Name.Replace("-", "")); }
                 else
                 { expressionCollection = CreateFilterForBeam(item.Name); }
 
@@ -134,15 +144,15 @@ namespace RCModelColors.Classes
                 {
                     // Два костыля разом, спасибо тебе, Trimble!
                     File.Move(filterName + ".SObjGrp", filterName + ".PObjGrp");
-                    File.WriteAllText(filterName + ".PObjGrp", 
-                        File.ReadAllText(filterName + ".PObjGrp", Encoding.UTF8), 
+                    File.WriteAllText(filterName + ".PObjGrp",
+                        File.ReadAllText(filterName + ".PObjGrp", Encoding.UTF8),
                         Encoding.GetEncoding(1251));
                 }
             }
 
             CreateRepresentationFileByText(repFileName);
 
-            if(applyChecked)
+            if (applyChecked)
             {
                 TSMUI.ModelViewEnumerator ViewEnum = TSMUI.ViewHandler.GetAllViews();
                 while (ViewEnum.MoveNext())
@@ -154,7 +164,7 @@ namespace RCModelColors.Classes
             }
         }
 
-        public static BinaryFilterExpressionCollection CreateFilterForBeam(string profileName)
+        public BinaryFilterExpressionCollection CreateFilterForBeam(string profileName)
         {
 
             //One filter expression (one filter string)
@@ -169,19 +179,19 @@ namespace RCModelColors.Classes
             return expressionCollection;
         }
 
-        public static BinaryFilterExpressionCollection CreateFilterForPlate(string thickness)
+        public BinaryFilterExpressionCollection CreateFilterForPlate(string thickness)
         {
 
             var expressionCollection = new BinaryFilterExpressionCollection();
 
-            foreach (string prefix in App.arrayOfPlatePrefixes.Append(""))
+            foreach (string prefix in PlatePrefixesArray.Append(""))
             {
                 var profile = new PartFilterExpressions.Profile();
 
                 //One filter expression (one filter string)
                 var currentProfileName = new StringConstantFilterExpression(
-                    prefix + thickness + " " + 
-                    prefix + thickness + "[*]*" + " " + 
+                    prefix + thickness + " " +
+                    prefix + thickness + "[*]*" + " " +
                     prefix + "*[*]" + thickness);
                 var expression = new BinaryFilterExpression(profile, StringOperatorType.IS_EQUAL, currentProfileName);
                 expressionCollection.Add(new BinaryFilterExpressionItem(expression, BinaryFilterOperatorType.BOOLEAN_OR));
@@ -189,13 +199,14 @@ namespace RCModelColors.Classes
 
             return expressionCollection;
         }
-        
-        public static void CreateRepresentationFileByText(string repFileName)
+
+        public void CreateRepresentationFileByText(string repFileName)
         {
-            var attributesPath = Path.Combine(App.teklaModelPath, "attributes");
+            var attributesPath = Path.Combine(ModelPath, "attributes");
+            //TODO: Настройку, чтоб выбирать путь для этих файлов
             var repFilePath = Path.Combine(attributesPath, repFileName + ".rep");
 
-            List<PropItem> list = DBInteraction.GetItemsList();
+            List<PropItem> list = DBInteraction.ReadDatabase();
 
             File.WriteAllText(repFilePath, "");
             //using (StreamReader profileReader = new StreamReader(profileFilePath))
@@ -205,10 +216,10 @@ namespace RCModelColors.Classes
                 writer.WriteLine("REPRESENTATIONS ");
                 writer.WriteLine("{");
                 writer.WriteLine("    Version= 1.04 ");
-                writer.WriteLine("    Count= " + (list.Count()+1).ToString()+ " ");
+                writer.WriteLine("    Count= " + (list.Count() + 1).ToString() + " ");
 
 
-                foreach(PropItem item in list)
+                foreach (PropItem item in list)
                 {
                     writer.WriteLine("    SECTION_UTILITY_LIMITS ");
                     writer.WriteLine("    {");
@@ -261,7 +272,7 @@ namespace RCModelColors.Classes
             }
         }
 
-        public static double PlateThickness(string profile)
+        public double PlateThickness(string profile)
         {
             double thickness = 0;
 
@@ -282,7 +293,7 @@ namespace RCModelColors.Classes
             return thickness;
         }
 
-        public static string WindowsString(string utfString)
+        public string WindowsString(string utfString)
         {
             Encoding srcEncodingFormat = Encoding.UTF8;
             Encoding dstEncodingFormat = Encoding.GetEncoding(1251);
@@ -293,5 +304,6 @@ namespace RCModelColors.Classes
             string finalString = dstEncodingFormat.GetString(convertedByteString);
             return finalString;
         }
+
     }
 }

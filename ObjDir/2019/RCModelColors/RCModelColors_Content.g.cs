@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("example_files/profilepalette.py")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("packages/sqlitepclraw.lib.e_sqlite3.v110_xp.1.1.13/runtimes/win-x86/native/e_sqli" +
     "te3.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("packages/sqlitepclraw.lib.e_sqlite3.v110_xp.1.1.13/runtimes/win-x64/native/e_sqli" +

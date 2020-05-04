@@ -2,16 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RCModelColors.Classes
 {
-    static class ColorLogic
+    public class ColorLogic
     {
-        public static void SetColors(int S, int L)
+        DBInteraction DBInteraction = new DBInteraction();
+        public void SetColors(int S, int L)
         {
-            List<PropItem> list = DBInteraction.GetItemsList();
+            List<PropItem> list = DBInteraction.ReadDatabase();
 
             int increment = list.Count != 0 ? (int)(360 / list.Count() - 1) : 0;
 
@@ -21,7 +20,7 @@ namespace RCModelColors.Classes
             {
                 numbers.Add(i);
             }
-            
+
             Random rnd = new Random();
 
             foreach (PropItem item in list)
@@ -37,9 +36,9 @@ namespace RCModelColors.Classes
                 DBInteraction.Store(item);
             }
         }
-        public static void UpdateColors(int S, int L)
+        public void UpdateColors(int S, int L)
         {
-            List<PropItem> list = DBInteraction.GetItemsList();
+            List<PropItem> list = DBInteraction.ReadDatabase();
 
             foreach (PropItem item in list)
             {

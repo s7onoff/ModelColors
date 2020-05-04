@@ -2,15 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
-using System.Threading.Tasks;
 
 namespace RCModelColors.Classes
 {
-    static class DBInteraction
+    public class DBInteraction
     {
-        public static void AddPropItem(string property)
+        public static string DatabasePath { get; set; }
+
+        public void AddPropItem(string property)
         {
             PropItem propItem = new PropItem()
             {
@@ -20,40 +20,26 @@ namespace RCModelColors.Classes
                 Lightness = 50
             };
 
-            using(SQLite.SQLiteConnection connection = new SQLiteConnection(App.databasePath))
+            using (SQLiteConnection connection = new SQLiteConnection(DatabasePath))
             {
                 connection.CreateTable<PropItem>();
-                if(connection.Find<PropItem>(propItem.Name) == null)
+                if (connection.Find<PropItem>(propItem.Name) == null)
                     connection.Insert(propItem);
             }
         }
 
-        public static void Clear()
+        public void Clear()
         {
-            using (SQLite.SQLiteConnection connection = new SQLiteConnection(App.databasePath))
+            using (SQLiteConnection connection = new SQLiteConnection(DatabasePath))
             {
                 connection.CreateTable<PropItem>();
                 int _ = connection.DeleteAll<PropItem>();
             }
         }
 
-        public static void ReadDatabase(List<PropItem> list, ref ListView listView)
+        public List<PropItem> ReadDatabase()
         {
-            //AddPropItem(); //- only for testing
-            using (SQLite.SQLiteConnection connection = new SQLiteConnection(App.databasePath))
-            {
-                connection.CreateTable<PropItem>();
-                list = (connection.Table<PropItem>().ToList().OrderBy(c => c.Name).ToList());
-            }
-            if (list != null)
-            {
-                listView.ItemsSource = list;
-            }
-        }
-
-        public static List<PropItem> GetItemsList()
-        {
-            using (SQLite.SQLiteConnection connection = new SQLiteConnection(App.databasePath))
+            using (SQLiteConnection connection = new SQLiteConnection(DatabasePath))
             {
                 connection.CreateTable<PropItem>();
                 List<PropItem> list = (connection.Table<PropItem>().ToList().OrderBy(c => c.Name).ToList());
@@ -61,12 +47,22 @@ namespace RCModelColors.Classes
             }
         }
 
-        public static void Store(PropItem item)
+        public void Store(PropItem item)
         {
-            using (SQLite.SQLiteConnection connection = new SQLiteConnection(App.databasePath))
+            using (SQLite.SQLiteConnection connection = new SQLiteConnection(DatabasePath))
             {
                 connection.CreateTable<PropItem>();
                 connection.Update(item);
+            }
+        }
+
+        public DBInteraction()
+        {
+            if(DatabasePath == null)
+            { 
+                string databaseName = "ModelColors.db";
+                string myDocumentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                DatabasePath = System.IO.Path.Combine(myDocumentsFolder, databaseName);
             }
         }
     }
