@@ -5,9 +5,10 @@
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontFamily" Value="Malgun Gothic"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF640000"/>
+            <Setter Property="Foreground" Value="#FF954112"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -16,17 +17,17 @@
         <Style TargetType="CheckBox">
             <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF640000"/>
+            <Setter Property="Foreground" Value="#FFB0480F"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="Button">
             <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF640000"/>
-            <Setter Property="Background" Value="AliceBlue"/>
-            <Setter Property="Margin" Value="1"/>
+            <Setter Property="FontSize" Value="14"/> 
+            <Setter Property="Foreground" Value="#FF833910"/>
+            <Setter Property="Background" Value="#AACED7E5"/>
             <Setter Property="CommandParameter" Value="{Binding ButtonsEnabled}"/>
+            <Setter Property="Margin" Value="1"/>
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="1"/>
@@ -37,13 +38,13 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
         <LinearGradientBrush x:Key="SaturationGradient">
-            <GradientStop Color="#FFB21919" Offset="1"/>
-            <GradientStop Color="#FF808080" Offset="0"/>
+            <GradientStop Color="#AAFF5B00" Offset="1"/>
+            <GradientStop Color="#AA808080" Offset="0"/>
         </LinearGradientBrush>
         <LinearGradientBrush x:Key="LightnessGradient">
-            <GradientStop Color="#FFFFFFFF" Offset="1"/>
-            <GradientStop Color="#FFd92626" Offset="0.5"/>
-            <GradientStop Color="#FF000000" Offset="0"/>
+            <GradientStop Color="#AAFFFFFF" Offset="1"/>
+            <GradientStop Color="#AADF611B" Offset="0.5"/>
+            <GradientStop Color="#AA000000" Offset="0"/>
         </LinearGradientBrush>
     </Application.Resources>
 </Application>

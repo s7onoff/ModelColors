@@ -17,14 +17,6 @@ namespace RCModelColors.Views
         public MainWindow()
         {
             InitializeComponent();
-            //TODO: Это тоже во вьюмодель
-            TeklaInteraction TeklaInteraction = new TeklaInteraction();
-
-            if (TeklaInteraction.Connect())
-            {
-                TeklaModelPath.Text = TeklaInteraction.ModelPath;
-                TeklaModelName.Text = TeklaInteraction.ModelName;
-            }
         }
 
         private void ColorSlider_LostMouseCapture(object sender, MouseEventArgs e)
