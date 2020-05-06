@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:RCModelColors.ViewModels"
         xmlns:uc="clr-namespace:RCModelColors.Controls"
         mc:Ignorable="d"
-        Title="RC_Model_Color" Height="450" Width="500"
+        Title="RC Model Color" Height="450" Width="500"
         MinHeight="200.0" MinWidth="300.0"
         >
     <Window.Resources>
@@ -16,10 +16,10 @@
     <Grid DataContext="{StaticResource vm}">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0,0.5" 
-                                 StartPoint="1,0.5">
-                <GradientStop Color="White" Offset="0"/>
-                <GradientStop Color="White" Offset="0.5"/>
-                <GradientStop Color="#FF2F5597" Offset="1"/>
+                                 StartPoint="1,0.8">
+                <GradientStop Color="#FFCDDAEB" Offset="0"/>
+                <GradientStop Color="#FFCDDAEB" Offset="0.3"/>
+                <GradientStop Color="#FF0E4EA3" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
@@ -30,28 +30,27 @@
         </Grid.RowDefinitions>
         <Grid x:Name="upperGrid" 
               Grid.Row="0"
-              Margin="7"
+              Margin="7,3"
               Height="60">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
+            
             <Image Source="..\Images\RC_White.png"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+            <TextBlock Grid.Column="1" Text="Sergey Semenov" Foreground="White"/>
+             
             <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                <TextBlock x:Name="TeklaModelPath" 
-                           Text="Tekla Model Path" 
+                <TextBlock Text="{Binding TeklaModelPath}" 
                            FontSize="10"/>
-                <TextBlock x:Name="TeklaModelName" 
-                           Text="ModelName" />
-
+                <TextBlock Text="{Binding TeklaModelName}" />
             </StackPanel>
         </Grid>
         <Grid x:Name="buttonsGrid" 
               Grid.Row="1"
               Background="#BBDAE3F3"
-              Margin="7"
+              Margin="7,3"
               Height="100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
@@ -66,7 +65,8 @@
                 <Button
                     Grid.Row="0"
                     Command="{Binding ReadWholeModel}">
-                    <TextBlock Text="Read profiles from whole model"/>
+                    <TextBlock Text="Read profiles from whole model"
+                               />
                 </Button>
                 <Button                   
                     Grid.Row="1"
@@ -115,12 +115,13 @@
             </Grid>
         </Grid>
         <Expander Grid.Row="2"
-                  Background="#BBDAE3F3">
+                  Background="#AACED7E5"
+                  Margin="7,0">
             <Expander.Header>
-                <TextBlock Text="Настройки"/>
+                <TextBlock Text="Settings"/>
             </Expander.Header>
             <StackPanel>
-                <Grid Margin="7,1"
+                <Grid Margin="7,3"
                       HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -159,7 +160,6 @@
 
                 <Grid x:Name="slidersGrid"
                       Margin="7,1"
-                      Background="#BBDAE3F3"
                       Height="40">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -167,7 +167,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
-                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Saturation" Grid.Column="0" Grid.Row="0"/>
                     <TextBlock Text="Lightness" Grid.Column="1" Grid.Row="0"/>
@@ -199,8 +199,8 @@
             </StackPanel>
         </Expander>
         <ListView x:Name="PropItemListView" 
-                      Margin="7" 
-                      Background="#BBDAE3F3"
+                      Margin="7,3" 
+                      Background="#AACED7E5"
                       ScrollViewer.CanContentScroll="True"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
                       Grid.Row="3"

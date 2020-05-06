@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using RCModelColors.Classes;
 
@@ -83,7 +84,7 @@ namespace RCModelColors.ViewModels
                 OnPropertyChanged(nameof(FilterName));
             }
         }
-        
+
         private bool platesIgnored;
 
         public bool PlatesIgnored
@@ -101,10 +102,10 @@ namespace RCModelColors.ViewModels
 
         public bool BeamsIgnored
         {
-            get { return platesIgnored; }
+            get { return beamsIgnored; }
             set
             {
-                platesIgnored = value;
+                beamsIgnored = value;
                 TeklaInteraction.BeamsIgnored = value;
                 OnPropertyChanged(nameof(BeamsIgnored));
             }
@@ -134,7 +135,56 @@ namespace RCModelColors.ViewModels
             }
         }
 
-        public bool ButtonsEnabled { get; set; }
+        private bool buttonsEnabled;
+
+        public bool ButtonsEnabled
+        {
+            get { return buttonsEnabled; }
+            set
+            {
+                buttonsEnabled = value;
+                ConnectButtonVisibility=(value ? Visibility.Hidden : Visibility.Visible);
+                OnPropertyChanged(nameof(ButtonsEnabled));
+            }
+        }
+
+        private Visibility connectButtonVisibility;
+
+        public Visibility ConnectButtonVisibility
+        {
+            get { return connectButtonVisibility; }
+            set
+            {
+                connectButtonVisibility = value;
+                OnPropertyChanged(nameof(connectButtonVisibility));
+            }
+        }
+
+
+
+        private string teklaModelPath;
+
+        public string TeklaModelPath
+        {
+            get { return teklaModelPath; }
+            set
+            {
+                teklaModelPath = value;
+                OnPropertyChanged(nameof(TeklaModelPath));
+            }
+        }
+
+        private string teklaModelName;
+
+        public string TeklaModelName
+        {
+            get { return teklaModelName; }
+            set
+            {
+                teklaModelName = value;
+                OnPropertyChanged(nameof(TeklaModelName));
+            }
+        }
 
         #endregion
 
@@ -151,6 +201,7 @@ namespace RCModelColors.ViewModels
         public ReadSelectedElementsCommand ReadSelectedElements { get; set; }
         public ShuffleColorsCommand ShuffleColors { get; set; }
         public CreateModelFilterCommand CreateModelFilter { get; set; }
+
 
         #region INotify
         public event PropertyChangedEventHandler PropertyChanged;
@@ -173,16 +224,31 @@ namespace RCModelColors.ViewModels
             Lightness = 50;
             Saturation = 70;
 
-            ButtonsEnabled = true;
+            ButtonsEnabled = false;
 
             ReadWholeModel = new ReadWholeModelCommand(this);
             ReadSelectedElements = new ReadSelectedElementsCommand(this);
             ShuffleColors = new ShuffleColorsCommand(this);
             CreateModelFilter = new CreateModelFilterCommand(this);
 
-            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+            if (TeklaInteraction.Connect())
             {
-                //Просто чтобы не забыть
+                TeklaModelPath = TeklaInteraction.ModelPath;
+                TeklaModelName = TeklaInteraction.ModelName;
+                ButtonsEnabled = true;
+            }
+            else
+            {
+                // Check what version of Tekla needed:
+                string teklaFullVersion = typeof(Tekla.Structures.Model.Model).Assembly.GetName().Version.ToString();
+                string teklaVersion = teklaFullVersion.Substring(0,4) + ((teklaFullVersion[5] == '1') ? "i" : "");
+                TeklaModelName = "Cannot connect to Tekla Structures v." + teklaVersion;
+            }
+
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                TeklaModelName = "MODEL NAME";
+                TeklaModelPath = "C:/Path/to/your/current/Tekla/Model";
             }
         }
     }
@@ -199,14 +265,13 @@ namespace RCModelColors.ViewModels
 
         public bool CanExecute(object parameter)
         {
-            return true;
-            //bool buttonsEnabled = true;
-            //if (parameter!=null)
-            //{
-            //    buttonsEnabled = (bool)parameter;
-            //}
+            bool buttonsEnabled = true;
+            if (parameter != null)
+            {
+                buttonsEnabled = (bool)parameter;
+            }
 
-            //return buttonsEnabled;
+            return buttonsEnabled;
         }
 
         public abstract void Execute(object parameter);

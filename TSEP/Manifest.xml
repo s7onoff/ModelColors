@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TEP Version="1.0">
+	<Product Id="CopyPasteSections"
+	UpgradeCode="1148CF32-B44E-4CEC-8AD3-ADA6FBCDD3F5"
+	Version="1.0" 
+	Language="1033"
+	Name="Copy-Paste Sections" 
+	Manufacturer=""
+	Description= ""
+	IconPath="%TEPDEFINITIONFILEFOLDER%\Icon.png">
+		<TeklaVersions>
+			<TeklaVersion Name="2099.1"/>
+			<MinTeklaVersion Name="2017.0"/>
+			<MaxTeklaVersion Name="2019.0"/>
+		</TeklaVersions>
+	</Product>
+	 
+	<SourcePathVariables>
+		<SourcePathVariable Id="TepOutputFolder" Value="%TEPDEFINITIONFILEFOLDER%\output" Comment="This provides the location where the package builder is to save the package."/>
+		<SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%"/>
+    </SourcePathVariables>
+
+	<TargetPathVariables>		
+		<PathVariable Id="ExtensionsDir" Value="%commonEnvFolder%\extensions\"/>
+		<PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\CopyPasteSections\"/>
+		<PathVariable Id="BitmapsDirectory" Value="%ENVDIR%\..\bitmaps\"/>		
+		<PathVariable Id="CommonMacroDirectory" Value="%commonEnvFolder%\macros\drawings\"/>
+	</TargetPathVariables>
+
+	<Component Id="TheExtensionComponent" Guid="6936F4B0-B421-4F13-8F86-AD616B9C8C4F">
+		<File Id="CopyPasteSections" Source="%BinariesFolder%\CopyPasteSections.exe" Target="%BinariesTargetDirectory%"/>
+		<File Id="ComponentCatalogFile" Source="%BinariesFolder%\CopyPasteSections_ComponentCatalog.ac.xml" Target="%BinariesTargetDirectory%"/>
+		<File Id="CatalogIcon" Source="%BinariesFolder%\et_element_CopyPasteSections.bmp" Target="%BitmapsDirectory%"/>
+		<File Id="Macro" Source="%BinariesFolder%\CopyPasteSections.cs" Target="%CommonMacroDirectory%"/>
+		<File Id="MacroCatalogIcon" Source="%BinariesFolder%\CopyPasteSections.bmp" Target="%CommonMacroDirectory%"/>
+	</Component>
+
+	<Feature Id="TheExtensionFeature" Title="ExtensionFeature">
+		<ComponentRef ReferenceId="TheExtensionComponent" />
+	</Feature>
+
+ </TEP>

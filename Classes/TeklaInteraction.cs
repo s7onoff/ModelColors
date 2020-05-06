@@ -26,8 +26,8 @@ namespace RCModelColors.Classes
         public TeklaInteraction()
         {
             Model = new Model();
-            DBInteraction = new DBInteraction();
             Connect();
+            DBInteraction = new DBInteraction();
         }
         public bool Connect()
         {
