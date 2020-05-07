@@ -15,10 +15,10 @@
     </Window.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.Background>
-            <LinearGradientBrush EndPoint="0,0.5" 
-                                 StartPoint="1,0.8">
-                <GradientStop Color="#FFCDDAEB" Offset="0"/>
-                <GradientStop Color="#FFCDDAEB" Offset="0.3"/>
+            <LinearGradientBrush EndPoint="0.3,0" 
+                                 StartPoint="1,0.9">
+                <GradientStop Color="#FF88A7D0" Offset="0"/>
+                <GradientStop Color="#FF88A7D0" Offset="0.1"/>
                 <GradientStop Color="#FF0E4EA3" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
@@ -49,7 +49,7 @@
         </Grid>
         <Grid x:Name="buttonsGrid" 
               Grid.Row="1"
-              Background="#BBDAE3F3"
+              Background="#AA0A2C5A"
               Margin="7,3"
               Height="100">
             <Grid.ColumnDefinitions>
@@ -115,7 +115,7 @@
             </Grid>
         </Grid>
         <Expander Grid.Row="2"
-                  Background="#AACED7E5"
+                  Background="#AA0A2C5A"
                   Margin="7,0">
             <Expander.Header>
                 <TextBlock Text="Settings"/>
@@ -200,7 +200,7 @@
         </Expander>
         <ListView x:Name="PropItemListView" 
                       Margin="7,3" 
-                      Background="#AACED7E5"
+                      Background="#AA0A2C5A"
                       ScrollViewer.CanContentScroll="True"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
                       Grid.Row="3"
