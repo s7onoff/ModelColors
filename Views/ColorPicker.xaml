@@ -1,0 +1,135 @@
+﻿<Window x:Class="RCModelColors.Views.ColorPicker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RCModelColors.Views"
+        xmlns:vm="clr-namespace:RCModelColors.ViewModels"
+        xmlns:uc="clr-namespace:RCModelColors.Controls"
+        mc:Ignorable="d"
+        Title="RC Model ColorPicker" Height="170" Width="250" MinHeight="150" >
+
+    <Window.Resources>
+        <vm:ColorPickerVM x:Key="vm"/>
+        <Style x:Key="ColorLines" TargetType="Rectangle">
+            <Setter Property="Margin" Value="3,3"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="RadiusX" Value="7"/>
+            <Setter Property="RadiusY" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="IBeam"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ColorHelpers" TargetType="Rectangle">
+            <Setter Property="Margin" Value="3,3,0,3" />
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="0.5"/>
+            <Setter Property="RadiusX" Value="3"/>
+            <Setter Property="RadiusY" Value="3"/>
+        </Style>
+        <Style x:Key="BottomButton" TargetType="Rectangle">
+            <Setter Property="Margin" Value="3,7"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeThickness" Value="2"/>
+            <Setter Property="RadiusX" Value="7"/>
+            <Setter Property="RadiusY" Value="10"/>
+        </Style>
+        <Style x:Key="ColorValuesText" TargetType="TextBlock"
+               BasedOn="{StaticResource DefaultText}" >
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Margin" Value="0,0,4,0"/>
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Black"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.Background>
+            <SolidColorBrush Color="Gray" />
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="17"/>
+            <ColumnDefinition Width="35"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="3">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#FFAC7B7B" Offset="0"/>
+                    <GradientStop Color="#FF74A474" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            <Rectangle.OpacityMask>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0" Color="Black"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Rectangle.OpacityMask>
+        </Rectangle>
+        
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="3">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,1">
+                    <GradientStop Color="#FF7C7CB2" Offset="0"/>
+                    <GradientStop Color="#FFA6A67D" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            <Rectangle.OpacityMask>
+                <LinearGradientBrush StartPoint="0.5,1" EndPoint="0.5,0">
+                    <GradientStop Offset="0" Color="Black"/>
+                    <GradientStop Offset="1" Color="Transparent"/>
+                </LinearGradientBrush>
+            </Rectangle.OpacityMask>
+        </Rectangle>
+
+        <Rectangle x:Name="RedColorLine" Grid.Row="0" Style="{StaticResource ColorLines}" Stroke="Black">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="{Binding RedLineLeftColor}" Offset="0"/>
+                    <GradientStop Color="{Binding RedLineRightColor}" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="GreenColorLine" Grid.Row="1" Style="{StaticResource ColorLines}" Stroke="Black">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="{Binding GreenLineLeftColor}" Offset="0"/>
+                    <GradientStop Color="{Binding GreenLineRightColor}" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle x:Name="BlueColorLine" Grid.Row="2" Style="{StaticResource ColorLines}" Stroke="Black">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="{Binding BlueLineLeftColor}" Offset="0"/>
+                    <GradientStop Color="{Binding BlueLineRightColor}" Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+
+        <Rectangle Grid.Row="0" Grid.Column="1" Fill="#FFC00000" Style="{StaticResource ColorHelpers}" />
+        <Rectangle Grid.Row="1" Grid.Column="1" Fill="#FF00C000" Style="{StaticResource ColorHelpers}" />
+        <Rectangle Grid.Row="2" Grid.Column="1" Fill="#FF0000C0" Style="{StaticResource ColorHelpers}" />
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Red}" Style="{StaticResource ColorValuesText}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Green}" Style="{StaticResource ColorValuesText}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Blue}" Style="{StaticResource ColorValuesText}"/>
+
+
+        <Rectangle Fill="{Binding RGBColor}" Style="{StaticResource BottomButton}" 
+                   Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0"/>
+        <Viewbox Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Margin="0,10" >
+            <TextBlock Text="✓" Foreground="{Binding RGBAntiColor}" FontWeight="Bold" />
+        </Viewbox>
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
 ﻿using RCModelColors.Classes;
+using RCModelColors.Views;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,6 +40,13 @@ namespace RCModelColors.Controls
         public PropItemControl()
         {
             InitializeComponent();
+        }
+
+        private void colorButton_Click(object sender, RoutedEventArgs e)
+        {
+            //ColorPicker colorPicker = new ColorPicker((e.Source as PropItem).Red, (e.Source as PropItem).Green, (e.Source as PropItem).Blue);
+
+            //colorPicker.ShowDialog();            
         }
     }
 }

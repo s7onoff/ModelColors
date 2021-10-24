@@ -45,5 +45,6 @@
                 VerticalAlignment="Stretch" 
                 HorizontalAlignment="Stretch" 
                 Grid.Column="4"/>
+
     </Grid>
 </UserControl>
