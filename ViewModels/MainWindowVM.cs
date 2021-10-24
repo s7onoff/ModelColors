@@ -287,7 +287,7 @@ namespace RCModelColors.ViewModels
         public ReadWholeModelCommand(MainWindowVM vm) : base(vm) { }
         public override void Execute(object parameter)
         {
-            VM.TeklaInteraction.GetAllProfiles();
+            VM.TeklaInteraction.GetProfiles(false);
             VM.RefreshTable();
         }
     }
@@ -296,7 +296,7 @@ namespace RCModelColors.ViewModels
         public ReadSelectedElementsCommand(MainWindowVM vm) : base(vm) { }
         public override void Execute(object parameter)
         {
-            VM.TeklaInteraction.GetSelectedProfiles();
+            VM.TeklaInteraction.GetProfiles(true);
             VM.RefreshTable();
         }
     }
@@ -305,7 +305,7 @@ namespace RCModelColors.ViewModels
         public ShuffleColorsCommand(MainWindowVM vm) : base(vm) { }
         public override void Execute(object parameter)
         {
-            VM.ColorLogic.SetColors((int)VM.Saturation, (int)VM.Lightness); ;
+            VM.ColorLogic.SetColors((int)VM.Saturation, (int)VM.Lightness);
             VM.RefreshTable();
         }
     }

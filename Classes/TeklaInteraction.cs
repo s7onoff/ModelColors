@@ -22,6 +22,7 @@ namespace RCModelColors.Classes
         public string ModelPath { get; set; }
         public bool PlatesIgnored { get; set; }
         public bool BeamsIgnored { get; set; }
+        public string ReportsDirectory { get; set; }
 
         public TeklaInteraction()
         {
@@ -41,51 +42,57 @@ namespace RCModelColors.Classes
             else return false;
         }
 
-        public void GetAllProfiles()
+        public void GetProfiles(bool Selected)
         {
             DBInteraction.Clear();
 
-            System.Type[] Types = new System.Type[2];
-            Types.SetValue(typeof(Part), 0);
-            Types.SetValue(typeof(Tekla.Structures.Model.Boolean), 1);
+            string reportFile = Path.Combine(ModelPath, "Report.xsr");
 
-            ModelObjectEnumerator Enum = Model.GetModelObjectSelector().GetAllObjectsWithType(Types);
+            string reportTemplateFile = Path.Combine(ModelPath, "RCModelColors_Profiles.rpt");
 
-            FullFillDB(Enum);
-        }
+            File.Copy("./Files/RCModelColors_Profiles.rpt", reportTemplateFile, true);
 
-        public void GetSelectedProfiles()
-        {
-            DBInteraction.Clear();
-
-            var selector = new TSMUI.ModelObjectSelector();
-
-            ModelObjectEnumerator Enum = selector.GetSelectedObjects();
-
-            FullFillDB(Enum);
-        }
-
-        private void FullFillDB(ModelObjectEnumerator Enum)
-        {
-            HashSet<Part> profilesSet = new HashSet<Part>();
-            while (Enum.MoveNext())
+            if (Selected)
             {
-                try
-                {
-                    Part currentPart = Enum.Current as Part;
-                    if (currentPart != null)
-                    {
-                        profilesSet.Add(currentPart);
-                    }
-                }
-                catch { Console.WriteLine("Something wrong"); }
+                Tekla.Structures.Model.Operations.Operation.CreateReportFromSelected("RCModelColors_Profiles", reportFile, "", "", "");
+            }
+            else
+            {
+                Tekla.Structures.Model.Operations.Operation.CreateReportFromAll("RCModelColors_Profiles", reportFile, "", "", "");
             }
 
-            foreach (Part part in profilesSet)
+            FullFillDB(ProfilesListFromReport(reportFile));
+
+            File.Delete(reportFile);
+            File.Delete(reportTemplateFile);
+        }
+
+        private List<string> ProfilesListFromReport(string reportPath)
+        {
+            List<string> profileList = new List<string>();
+
+            using (StreamReader reader = new StreamReader(reportPath))
+            {
+                string reportFileLine;
+                while ((reportFileLine = reader.ReadLine()) != null)
+                {
+                    if(reportFileLine != "")
+                    { 
+                        profileList.Add(reportFileLine.Trim());
+                    }
+                }
+            }
+
+            return profileList;
+        }
+
+        private void FullFillDB(List<string> profileList)
+        {
+            foreach (string profileName in profileList)
             {
                 // check if it is plate
-                if (PlatePrefixesArray.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) ||
-                            Regex.IsMatch(part.Profile.ProfileString, @"^\d+"))
+                if (PlatePrefixesArray.Any(s => profileName.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) || 
+                    Regex.IsMatch(profileName, @"^\d+"))
                 {
                     if (PlatesIgnored)
                     {
@@ -93,20 +100,20 @@ namespace RCModelColors.Classes
                     }
                     else
                     {
-                        double thickness = PlateThickness(part.Profile.ProfileString);
+                        double thickness = PlateThickness(profileName);
                         DBInteraction.AddPropItem("-" + thickness.ToString());
                     }
                 }
                 else
                 {
                     // check if profile should be ignored
-                    if (IgnoredPrefixesArray.Any(s => part.Profile.ProfileString.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) || BeamsIgnored)
+                    if (IgnoredPrefixesArray.Any(s => profileName.StartsWith(s, StringComparison.CurrentCultureIgnoreCase)) || BeamsIgnored)
                     {
                         continue;
                     }
                     else
                     {
-                        DBInteraction.AddPropItem(part.Profile.ProfileString);
+                        DBInteraction.AddPropItem(profileName);
                     }
                 }
             }
@@ -304,6 +311,29 @@ namespace RCModelColors.Classes
             string finalString = dstEncodingFormat.GetString(convertedByteString);
             return finalString;
         }
+
+        //public string GetReportsDirectory()
+        //{
+        //    string directory = "";
+        //    Tekla.Structures.TeklaStructuresSettings.GetAdvancedOption("XS_REPORT_OUTPUT_DIRECTORY", ref directory);
+        //    if(directory.StartsWith(".\\"))
+        //    {
+        //        if(directory.StartsWith("..\\"))
+        //        {
+        //            ReportsDirectory = Path.Combine(ModelPath, "\\", directory);
+        //        }
+        //        else
+        //        {
+        //            ReportsDirectory = Path.Combine(ModelPath, directory.Substring(2));
+        //        }
+        //    }
+        //    else
+        //    { 
+        //        ReportsDirectory = Path.Combine(directory); 
+        //    }
+        //    ReportsDirectory = directory;
+        //    return directory;
+        //}
 
     }
 }
