@@ -57,7 +57,11 @@ namespace RCModelColors.Controls
             colorPicker.MainGrid.DataContext = vm;
             colorPicker.ShowDialog();
 
+            var dbInteraction = new DBInteraction();
+
             item.SetHSLfromRGB(vm.Red, vm.Green, vm.Blue);
+
+            dbInteraction.Store(item);
 
             this.hueTextBlock.Text = item.Hue.ToString();
             this.saturationTextBlock.Text = item.Saturation.ToString();
