@@ -16,7 +16,7 @@ namespace RCModelColors.Classes
             set { name = value; }
         }
 
-        public double Red
+        public int Red
         {
             get
             {
@@ -26,11 +26,11 @@ namespace RCModelColors.Classes
                     S = Saturation,
                     L = Lightness
                 };
-                return hsl.ToRgb().R;
+                return (int)hsl.ToRgb().R;
             }
         }
 
-        public double Green
+        public int Green
         {
             get
             {
@@ -40,11 +40,11 @@ namespace RCModelColors.Classes
                     S = Saturation,
                     L = Lightness
                 };
-                return hsl.ToRgb().G;
+                return (int)hsl.ToRgb().G;
             }
         }
 
-        public double Blue
+        public int Blue
         {
             get
             {
@@ -54,7 +54,7 @@ namespace RCModelColors.Classes
                     S = Saturation,
                     L = Lightness
                 };
-                return hsl.ToRgb().B;
+                return (int)hsl.ToRgb().B;
             }
         }
 
@@ -105,16 +105,27 @@ namespace RCModelColors.Classes
         }
         #endregion
 
+        public void SetHSLfromRGB(int red, int green, int blue)
+        {
+            var rgb = new Rgb{R = red,
+                              G = green,
+                              B = blue };
+            var hsl = rgb.To<Hsl>();
+            Hue = (int)hsl.H;
+            Saturation = (int)hsl.S;
+            Lightness = (int)hsl.L;
+        }
+
         public string GetColorString()
         {
-            string colorString = $"#FF{(int)Red:X2}{(int)Green:X2}{(int)Blue:X2}";
+            string colorString = $"#FF{Red:X2}{Green:X2}{Blue:X2}";
             return colorString;
         }
 
         public string GetTeklaNumber()
         {
 
-            string hexNumber = $"{(int)Red:X2}{(int)Green:X2}{(int)Blue:X2}";
+            string hexNumber = $"{Red:X2}{Green:X2}{Blue:X2}";
             int intNumber = Int32.Parse(hexNumber, System.Globalization.NumberStyles.HexNumber);
             int intFinalNumber = intNumber + 100;
             return intFinalNumber.ToString();

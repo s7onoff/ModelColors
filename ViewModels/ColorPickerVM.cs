@@ -1,21 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RCModelColors.ViewModels
 {
-    class ColorPickerVM
+    class ColorPickerVM : INotifyPropertyChanged
     {
+        #region INotify
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
         #region Props
 
-        private int red = 150;
+        public String MyID { get; set; }
+
+        private int red;
 
         public int Red
         {
             get { return red; }
-            set { red = value; }
+            set
+            {
+                red = value;
+                OnPropertyChanged(nameof(Red));
+                UpdateGradients();
+            }
         }
 
         private int green = 100;
@@ -23,15 +40,25 @@ namespace RCModelColors.ViewModels
         public int Green
         {
             get { return green; }
-            set { green = value; }
+            set 
+            { 
+                green = value;
+                OnPropertyChanged(nameof(Green));
+                UpdateGradients();
+            }
         }
 
-        private int blue = 13;
+        private int blue = 100;
 
         public int Blue
         {
             get { return blue; }
-            set { blue = value; }
+            set 
+            { 
+                blue = value;
+                OnPropertyChanged(nameof(Blue));
+                UpdateGradients();
+            }
         }
 
         private string redLineLeftColor;
@@ -96,6 +123,7 @@ namespace RCModelColors.ViewModels
 
         private string rgbAntiColor;
 
+
         public string RGBAntiColor
         {
             get
@@ -106,6 +134,26 @@ namespace RCModelColors.ViewModels
         }
         #endregion
 
+        #region Methods
+        private void UpdateGradients()
+        {
+            OnPropertyChanged(nameof(RedLineLeftColor));
+            OnPropertyChanged(nameof(RedLineRightColor));
+            OnPropertyChanged(nameof(GreenLineLeftColor));
+            OnPropertyChanged(nameof(GreenLineRightColor));
+            OnPropertyChanged(nameof(BlueLineLeftColor));
+            OnPropertyChanged(nameof(BlueLineRightColor));
+            OnPropertyChanged(nameof(RGBColor));
+            OnPropertyChanged(nameof(rgbAntiColor));
+        }
+        #endregion
 
+        #region Ctor
+        public ColorPickerVM()
+        {
+            MyID = Guid.NewGuid().ToString();
+        }
+
+        #endregion
     }
 }

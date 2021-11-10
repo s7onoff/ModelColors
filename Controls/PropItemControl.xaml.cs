@@ -44,9 +44,25 @@ namespace RCModelColors.Controls
 
         private void colorButton_Click(object sender, RoutedEventArgs e)
         {
-            //ColorPicker colorPicker = new ColorPicker((e.Source as PropItem).Red, (e.Source as PropItem).Green, (e.Source as PropItem).Blue);
+            var item = (PropItem)(((Button)(e.Source)).DataContext);
+            var vm = new ViewModels.ColorPickerVM();
 
-            //colorPicker.ShowDialog();            
+            vm.Red = item.Red;
+            vm.Blue = item.Blue;
+            vm.Green = item.Green;
+
+            ColorPicker colorPicker = new ColorPicker();
+            colorPicker.Owner = Application.Current.MainWindow;
+
+            colorPicker.MainGrid.DataContext = vm;
+            colorPicker.ShowDialog();
+
+            item.SetHSLfromRGB(vm.Red, vm.Green, vm.Blue);
+
+            this.hueTextBlock.Text = item.Hue.ToString();
+            this.saturationTextBlock.Text = item.Saturation.ToString();
+            this.luminanceTextBlock.Text = item.Lightness.ToString();
+            this.colorButton.Background = new BrushConverter().ConvertFromString(item.GetColorString()) as SolidColorBrush;
         }
     }
 }

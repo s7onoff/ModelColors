@@ -7,8 +7,8 @@
         xmlns:vm="clr-namespace:RCModelColors.ViewModels"
         xmlns:uc="clr-namespace:RCModelColors.Controls"
         mc:Ignorable="d"
-        Title="RC Model ColorPicker" Height="170" Width="250" MinHeight="150" >
-
+        Title="RC Model ColorPicker" Height="160" Width="250" MinHeight="150" WindowStyle="None" WindowStartupLocation="CenterOwner">
+    
     <Window.Resources>
         <vm:ColorPickerVM x:Key="vm"/>
         <Style x:Key="ColorLines" TargetType="Rectangle">
@@ -45,8 +45,40 @@
             <Setter Property="FontWeight" Value="Black"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
+        <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true"/>
+            <Setter Property="OverridesDefaultStyle" Value="false"/>
+            <Setter Property="Height" Value="18"/>
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse  Stroke="Black"
+                          StrokeThickness="1"
+                          Name="Ellipse" 
+                          Fill="OrangeRed" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="Orange"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Ellipse" Property="Fill" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ColorComponentSlider" TargetType="Slider">
+            <Setter Property="LargeChange" Value="30"/>
+            <Setter Property="SmallChange" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Minimum" Value="0"/>
+            <Setter Property="Maximum" Value="255"/>
+        </Style>
     </Window.Resources>
-    <Grid DataContext="{StaticResource vm}">
+    <Grid x:Name="MainGrid" DataContext="{StaticResource vm}">
         <Grid.Background>
             <SolidColorBrush Color="Gray" />
         </Grid.Background>
@@ -103,7 +135,7 @@
         <Rectangle x:Name="GreenColorLine" Grid.Row="1" Style="{StaticResource ColorLines}" Stroke="Black">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                    <GradientStop Color="{Binding GreenLineLeftColor}" Offset="0"/>
+                    <GradientStop Color="{Binding GreenLineLeftColor, UpdateSourceTrigger=PropertyChanged}" Offset="0"/>
                     <GradientStop Color="{Binding GreenLineRightColor}" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
@@ -125,11 +157,21 @@
         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Green}" Style="{StaticResource ColorValuesText}"/>
         <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding Blue}" Style="{StaticResource ColorValuesText}"/>
 
+        <Slider Grid.Row="0" VerticalAlignment="Center" Grid.Column ="0" 
+                Style="{StaticResource ColorComponentSlider}"
+                Value="{Binding Red, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Slider Grid.Row="1" VerticalAlignment="Center" Grid.Column ="0" 
+                Style="{StaticResource ColorComponentSlider}"
+                Value="{Binding Green, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Slider Grid.Row="2" VerticalAlignment="Center" Grid.Column ="0" 
+                Style="{StaticResource ColorComponentSlider}"
+                Value="{Binding Blue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Rectangle Fill="{Binding RGBColor}" Style="{StaticResource BottomButton}" 
-                   Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0"/>
+                   Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Cursor="Hand" PreviewMouseLeftButtonDown="TickButton_Click"/>
         <Viewbox Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Margin="0,10" >
-            <TextBlock Text="✓" Foreground="{Binding RGBAntiColor}" FontWeight="Bold" />
+            <TextBlock Text="✓" Foreground="{Binding RGBAntiColor}" FontWeight="Bold" PreviewMouseLeftButtonDown="TickButton_Click" Cursor="Hand"/>
         </Viewbox>
+        <TextBlock Text="{Binding MyID}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" FontSize="7" VerticalAlignment="Bottom" Margin="0,0,0,-1" Foreground="Black" FontWeight="Light"/>
     </Grid>
 </Window>

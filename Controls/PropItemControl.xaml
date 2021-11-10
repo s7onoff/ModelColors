@@ -21,12 +21,13 @@
         </StackPanel>
 -->
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="*" MinWidth="20"/>
-            <ColumnDefinition Width="*" MinWidth="20"/>
-            <ColumnDefinition Width="*" MinWidth="20"/>
+            <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="2*" MinWidth="20"/>
+            <ColumnDefinition Width="2*" MinWidth="20"/>
+            <ColumnDefinition Width="2*" MinWidth="20"/>
+            <ColumnDefinition Width="4*" MinWidth="20"/>
         </Grid.ColumnDefinitions>
+        
         <TextBlock x:Name="nameTextBlock" 
                    Text="PropertyItemName" 
                    Grid.Column="0" 
@@ -44,7 +45,7 @@
                 Background="#AAFF0000" 
                 VerticalAlignment="Stretch" 
                 HorizontalAlignment="Stretch" 
-                Grid.Column="4"/>
-
+                Grid.Column="4"
+                Click="colorButton_Click"/>
     </Grid>
 </UserControl>

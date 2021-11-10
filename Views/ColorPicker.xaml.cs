@@ -19,10 +19,13 @@ namespace RCModelColors.Views
     /// </summary>
     public partial class ColorPicker : Window
     {
-        public ColorPicker(int r, int g, int b)
+        public ColorPicker()
         {
             InitializeComponent();
-            
+        }
+        private void TickButton_Click(object sender, MouseEventArgs e)
+        {
+            this.Close();
         }
     }
 }
