@@ -56,6 +56,14 @@ namespace RCModelColors.Classes
             }
         }
 
+        public void Delete(PropItem item)
+        {
+            using (SQLite.SQLiteConnection connection = new SQLiteConnection(DatabasePath))
+            {
+                connection.CreateTable<PropItem>();
+                connection.Delete(item);
+            }
+        }
         public DBInteraction()
         {
             if(DatabasePath == null)

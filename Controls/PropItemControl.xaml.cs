@@ -11,12 +11,15 @@ namespace RCModelColors.Controls
     /// </summary>
     public partial class PropItemControl : UserControl
     {
-
-
         public PropItem PropItem
         {
             get { return (PropItem)GetValue(PropItemProperty); }
             set { SetValue(PropItemProperty, value); }
+        }
+
+        public PropItemControl()
+        {
+            InitializeComponent();
         }
 
         // Using a DependencyProperty as the backing store for PropItem.  This enables animation, styling, binding, etc...
@@ -37,19 +40,15 @@ namespace RCModelColors.Controls
 
         }
 
-        public PropItemControl()
-        {
-            InitializeComponent();
-        }
-
         private void colorButton_Click(object sender, RoutedEventArgs e)
         {
             var item = (PropItem)(((Button)(e.Source)).DataContext);
-            var vm = new ViewModels.ColorPickerVM();
-
-            vm.Red = item.Red;
-            vm.Blue = item.Blue;
-            vm.Green = item.Green;
+            var vm = new ViewModels.ColorPickerVM
+            {
+                Red = item.Red,
+                Blue = item.Blue,
+                Green = item.Green
+            };
 
             ColorPicker colorPicker = new ColorPicker();
             colorPicker.Owner = Application.Current.MainWindow;
@@ -63,10 +62,15 @@ namespace RCModelColors.Controls
 
             dbInteraction.Store(item);
 
-            this.hueTextBlock.Text = item.Hue.ToString();
-            this.saturationTextBlock.Text = item.Saturation.ToString();
-            this.luminanceTextBlock.Text = item.Lightness.ToString();
-            this.colorButton.Background = new BrushConverter().ConvertFromString(item.GetColorString()) as SolidColorBrush;
+            ((ViewModels.MainWindowVM)((MainWindow)Application.Current.MainWindow).MainGrid.DataContext).RefreshTable();
+        }
+
+        private void Del_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (PropItem)(((MenuItem)(e.Source)).DataContext);
+            var dbInteraction = new DBInteraction();
+            dbInteraction.Delete(item);
+            ((ViewModels.MainWindowVM)((MainWindow)Application.Current.MainWindow).MainGrid.DataContext).RefreshTable();
         }
     }
 }

@@ -13,7 +13,8 @@
     <Window.Resources>
         <vm:MainWindowVM x:Key="vm"/>
     </Window.Resources>
-    <Grid DataContext="{StaticResource vm}">
+    <Grid x:Name="MainGrid" 
+          DataContext="{StaticResource vm}">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.3,0" 
                                  StartPoint="1,0.9">
@@ -201,10 +202,10 @@
         <ListView x:Name="PropItemListView" 
                       Margin="7,3" 
                       Background="#AA0A2C5A"
-                      ScrollViewer.CanContentScroll="True"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible"
                       Grid.Row="3"
-                  ItemsSource="{Binding PropItems}">
+                  ItemsSource="{Binding PropItems}"
+                  ScrollViewer.CanContentScroll="True"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <uc:PropItemControl PropItem="{Binding}"/>

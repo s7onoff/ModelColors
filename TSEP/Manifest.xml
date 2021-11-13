@@ -1,38 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TEP Version="1.0">
-	<Product Id="CopyPasteSections"
-	UpgradeCode="1148CF32-B44E-4CEC-8AD3-ADA6FBCDD3F5"
-	Version="1.0" 
+<TEP Version="2.0">
+	<Product Id="RCModelColors"
+	UpgradeCode="0FFC014F-4FE8-451C-ADD9-ACA4E4F47BB7"
+	Version="1.3" 
 	Language="1033"
-	Name="Copy-Paste Sections" 
-	Manufacturer=""
-	Description= ""
-	IconPath="%TEPDEFINITIONFILEFOLDER%\Icon.png">
+	Name="RCModelColors" 
+	Manufacturer="Renaissance Construction Project"
+	Description= "Application that helps to colorize your model by cross-sections"
+	IconPath="%TEPDEFINITIONFILEFOLDER%\Icon.png"
+	Type="Extension">
 		<TeklaVersions>
-			<TeklaVersion Name="2099.1"/>
-			<MinTeklaVersion Name="2017.0"/>
-			<MaxTeklaVersion Name="2019.0"/>
+			<TeklaVersion Name="2019.1"/>
+			<MinTeklaVersion Name="2017.1"/>
+			<MaxTeklaVersion Name="2099.1"/>
 		</TeklaVersions>
 	</Product>
 	 
 	<SourcePathVariables>
 		<SourcePathVariable Id="TepOutputFolder" Value="%TEPDEFINITIONFILEFOLDER%\output" Comment="This provides the location where the package builder is to save the package."/>
-		<SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%"/>
+		<SourcePathVariable Id="BinariesFolder" Value="%TEPDEFINITIONFILEFOLDER%\bin\"/>
+		<SourcePathVariable Id="MacroFolder" Value="%TEPDEFINITIONFILEFOLDER%\macro\"/>
     </SourcePathVariables>
 
 	<TargetPathVariables>		
 		<PathVariable Id="ExtensionsDir" Value="%commonEnvFolder%\extensions\"/>
-		<PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\CopyPasteSections\"/>
-		<PathVariable Id="BitmapsDirectory" Value="%ENVDIR%\..\bitmaps\"/>		
-		<PathVariable Id="CommonMacroDirectory" Value="%commonEnvFolder%\macros\drawings\"/>
+		<PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\RCModelColors\"/>
+		<PathVariable Id="BitmapsDirectory" Value="%ENVDIR%\..\bitmaps\"/>
+		<PathVariable Id="CommonMacroDirectory" Value="%commonEnvFolder%\macros\modeling\"/>
 	</TargetPathVariables>
 
-	<Component Id="TheExtensionComponent" Guid="6936F4B0-B421-4F13-8F86-AD616B9C8C4F">
-		<File Id="CopyPasteSections" Source="%BinariesFolder%\CopyPasteSections.exe" Target="%BinariesTargetDirectory%"/>
-		<File Id="ComponentCatalogFile" Source="%BinariesFolder%\CopyPasteSections_ComponentCatalog.ac.xml" Target="%BinariesTargetDirectory%"/>
-		<File Id="CatalogIcon" Source="%BinariesFolder%\et_element_CopyPasteSections.bmp" Target="%BitmapsDirectory%"/>
-		<File Id="Macro" Source="%BinariesFolder%\CopyPasteSections.cs" Target="%CommonMacroDirectory%"/>
-		<File Id="MacroCatalogIcon" Source="%BinariesFolder%\CopyPasteSections.bmp" Target="%CommonMacroDirectory%"/>
+	<Component Id="TheExtensionComponent" Guid="4C45E702-3439-439B-A9E3-29F233E85053">
+		<File Id="RCModelColors" Source="%BinariesFolder%\*.*" Target="%BinariesTargetDirectory%" Recursive="yes"/>
+		<File Id="MacroIcon" Source="%MacroFolder%\RCModelColors.bmp" Target="%BitmapsDirectory%"/>
+		<File Id="Macro" Source="%MacroFolder%\RCModelColors.cs" Target="%CommonMacroDirectory%"/>
+		<File Id="MacroCatalogIcon" Source="%MacroFolder%\RCModelColors.bmp" Target="%CommonMacroDirectory%"/>
 	</Component>
 
 	<Feature Id="TheExtensionFeature" Title="ExtensionFeature">

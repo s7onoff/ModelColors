@@ -169,7 +169,7 @@ namespace RCModelColors.ViewModels
             get { return teklaModelPath; }
             set
             {
-                teklaModelPath = value;
+                teklaModelPath = value.Replace(System.IO.Path.DirectorySeparatorChar, '/');
                 OnPropertyChanged(nameof(TeklaModelPath));
             }
         }
@@ -181,7 +181,7 @@ namespace RCModelColors.ViewModels
             get { return teklaModelName; }
             set
             {
-                teklaModelName = value;
+                teklaModelName = System.IO.Path.GetFileNameWithoutExtension(value);
                 OnPropertyChanged(nameof(TeklaModelName));
             }
         }

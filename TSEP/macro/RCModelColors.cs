@@ -15,8 +15,8 @@ namespace Tekla.Technology.Akit.UserScript
             string dir = string.Empty;
             TeklaStructuresSettings.GetAdvancedOption("XSDATADIR", ref dir);
 
-            string ApplicationName = "CopyPasteSections.exe";
-			string ApplicationPath = Path.Combine(dir, "Environments\\common\\extensions\\CopyPasteSections\\" + ApplicationName);
+            string ApplicationName = "RCModelColors.exe";
+			string ApplicationPath = Path.Combine(dir, "Environments\\common\\extensions\\RCModelColors\\" + ApplicationName);
 
             Process NewProcess = new Process();
 

@@ -27,7 +27,10 @@
             <ColumnDefinition Width="2*" MinWidth="20"/>
             <ColumnDefinition Width="4*" MinWidth="20"/>
         </Grid.ColumnDefinitions>
-        
+        <Rectangle Grid.Column="0" 
+                   Grid.ColumnSpan="5" 
+                   Fill="Transparent"
+                   />
         <TextBlock x:Name="nameTextBlock" 
                    Text="PropertyItemName" 
                    Grid.Column="0" 
@@ -48,4 +51,14 @@
                 Grid.Column="4"
                 Click="colorButton_Click"/>
     </Grid>
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Click="Del_Click" 
+                      IsEnabled="True">
+                <MenuItem.Header>
+                    <TextBlock Text="Delete" Foreground="Red"/>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+    </UserControl.ContextMenu>
 </UserControl>

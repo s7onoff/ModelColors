@@ -50,21 +50,29 @@ namespace RCModelColors.Classes
 
             string reportTemplateFile = Path.Combine(ModelPath, "RCModelColors_Profiles.rpt");
 
-            File.Copy("./Files/RCModelColors_Profiles.rpt", reportTemplateFile, true);
+            string currentExeDir = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 
-            if (Selected)
+            string sourceReportTemplateFile = Path.Combine(currentExeDir, "./Files/RCModelColors_Profiles.rpt");
+
+
+            if (File.Exists(sourceReportTemplateFile))
             {
-                Tekla.Structures.Model.Operations.Operation.CreateReportFromSelected("RCModelColors_Profiles", reportFile, "", "", "");
-            }
-            else
-            {
-                Tekla.Structures.Model.Operations.Operation.CreateReportFromAll("RCModelColors_Profiles", reportFile, "", "", "");
-            }
+                File.Copy(sourceReportTemplateFile, reportTemplateFile, true);
 
-            FullFillDB(ProfilesListFromReport(reportFile));
+                if (Selected)
+                {
+                    Tekla.Structures.Model.Operations.Operation.CreateReportFromSelected("RCModelColors_Profiles", reportFile, "", "", "");
+                }
+                else
+                {
+                    Tekla.Structures.Model.Operations.Operation.CreateReportFromAll("RCModelColors_Profiles", reportFile, "", "", "");
+                }
 
-            File.Delete(reportFile);
-            File.Delete(reportTemplateFile);
+                FullFillDB(ProfilesListFromReport(reportFile));
+
+                File.Delete(reportFile);
+                File.Delete(reportTemplateFile);
+            }
         }
 
         private List<string> ProfilesListFromReport(string reportPath)
