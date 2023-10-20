@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using Tekla.Structures.Filtering.Categories;
 using Tekla.Structures.Model;
 using TSMUI = Tekla.Structures.Model.UI;
 
-namespace RCModelColors.Classes
+namespace ModelColors.Classes
 {
     public class TeklaInteraction
     {
@@ -22,7 +23,7 @@ namespace RCModelColors.Classes
         public string ModelPath { get; set; }
         public bool PlatesIgnored { get; set; }
         public bool BeamsIgnored { get; set; }
-        public string ReportsDirectory { get; set; }
+        public static Encoding ThisPCEncoding { get; set; } = Encoding.GetEncoding(CultureInfo.GetCultureInfo(CultureInfo.InstalledUICulture.Name).TextInfo.ANSICodePage);
 
         public TeklaInteraction()
         {
@@ -36,7 +37,8 @@ namespace RCModelColors.Classes
             {
                 ModelName = Model.GetInfo().ModelName;
                 ModelPath = Model.GetInfo().ModelPath;
-                DBInteraction.DatabasePath = Path.Combine(ModelPath, "ModelColors.db");
+                //DBInteraction.DatabasePath = Path.Combine(ModelPath, "ModelColors.db");
+                DBInteraction.DatabasePath = Path.Combine(ModelPath, "ModelColors_db");
                 return true;
             }
             else return false;
@@ -48,11 +50,11 @@ namespace RCModelColors.Classes
 
             string reportFile = Path.Combine(ModelPath, "Report.xsr");
 
-            string reportTemplateFile = Path.Combine(ModelPath, "RCModelColors_Profiles.rpt");
+            string reportTemplateFile = Path.Combine(ModelPath, "ModelColors_Profiles.rpt");
 
             string currentExeDir = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 
-            string sourceReportTemplateFile = Path.Combine(currentExeDir, "./Files/RCModelColors_Profiles.rpt");
+            string sourceReportTemplateFile = Path.Combine(currentExeDir, "./Files/ModelColors_Profiles.rpt");
 
 
             if (File.Exists(sourceReportTemplateFile))
@@ -61,11 +63,11 @@ namespace RCModelColors.Classes
 
                 if (Selected)
                 {
-                    Tekla.Structures.Model.Operations.Operation.CreateReportFromSelected("RCModelColors_Profiles", reportFile, "", "", "");
+                    Tekla.Structures.Model.Operations.Operation.CreateReportFromSelected("ModelColors_Profiles", reportFile, "", "", "");
                 }
                 else
                 {
-                    Tekla.Structures.Model.Operations.Operation.CreateReportFromAll("RCModelColors_Profiles", reportFile, "", "", "");
+                    Tekla.Structures.Model.Operations.Operation.CreateReportFromAll("ModelColors_Profiles", reportFile, "", "", "");
                 }
 
                 FullFillDB(ProfilesListFromReport(reportFile));
@@ -79,7 +81,8 @@ namespace RCModelColors.Classes
         {
             List<string> profileList = new List<string>();
 
-            using (StreamReader reader = new StreamReader(reportPath))
+            // Reading files with encoding, that Tekla should probably have been using for writing
+            using (StreamReader reader = new StreamReader(reportPath, encoding:ThisPCEncoding))
             {
                 string reportFileLine;
                 while ((reportFileLine = reader.ReadLine()) != null)
@@ -96,6 +99,7 @@ namespace RCModelColors.Classes
 
         private void FullFillDB(List<string> profileList)
         {
+            var formattedProfiles = new List<string>();
             foreach (string profileName in profileList)
             {
                 // check if it is plate
@@ -109,7 +113,8 @@ namespace RCModelColors.Classes
                     else
                     {
                         double thickness = PlateThickness(profileName);
-                        DBInteraction.AddPropItem("-" + thickness.ToString());
+                        //DBInteraction.AddPropItem("-" + thickness.ToString());
+                        formattedProfiles.Add("-" + thickness);
                     }
                 }
                 else
@@ -121,9 +126,11 @@ namespace RCModelColors.Classes
                     }
                     else
                     {
-                        DBInteraction.AddPropItem(profileName);
+                        formattedProfiles.Add(profileName);
+                        //DBInteraction.AddPropItem(profileName);
                     }
                 }
+                DBInteraction.WriteData(formattedProfiles);
             }
         }
 
@@ -136,7 +143,7 @@ namespace RCModelColors.Classes
             foreach (PropItem item in list)
             {
                 //filename
-                var filterName = Path.Combine(attributesPath, "@" + item.Name).Replace("*", "_");
+                var filterName = Path.Combine(attributesPath, "@" + item.Name).Replace("*", "_").Replace("/", "_");
 
                 BinaryFilterExpressionCollection expressionCollection;
 
@@ -158,10 +165,14 @@ namespace RCModelColors.Classes
                 finally
                 {
                     // Два костыля разом, спасибо тебе, Trimble!
+                    // We created SObjGrp because tekla doesn't give us a chance to create PObjGrp with API, but they are the same.
+                    // So just renaming:
                     File.Move(filterName + ".SObjGrp", filterName + ".PObjGrp");
+
+                    // We need to encode this from unicode to encoding by user locale
                     File.WriteAllText(filterName + ".PObjGrp",
                         File.ReadAllText(filterName + ".PObjGrp", Encoding.UTF8),
-                        Encoding.GetEncoding(1251));
+                        ThisPCEncoding);
                 }
             }
 
@@ -226,7 +237,7 @@ namespace RCModelColors.Classes
             File.WriteAllText(repFilePath, "");
             //using (StreamReader profileReader = new StreamReader(profileFilePath))
             //using (StreamReader headReader = new StreamReader(headFilePath))
-            using (StreamWriter writer = new StreamWriter(repFilePath, true))
+            using (StreamWriter writer = new StreamWriter(repFilePath, true, ThisPCEncoding))
             {
                 writer.WriteLine("REPRESENTATIONS ");
                 writer.WriteLine("{");
@@ -245,7 +256,7 @@ namespace RCModelColors.Classes
                     writer.WriteLine("        }");
                     writer.WriteLine("    SECTION_OBJECT_REP ");
                     writer.WriteLine("    {");
-                    writer.WriteLine("        @" + item.Name.ToString().Replace("*", "_") + " ");
+                    writer.WriteLine("        @" + item.Name.ToString().Replace("*", "_").Replace("/", "_").Replace(" ", "_") + " ");
                     writer.WriteLine("        " + item.GetTeklaNumber() + " ");
                     writer.WriteLine("        10 ");
                     writer.WriteLine("        }");
@@ -306,18 +317,6 @@ namespace RCModelColors.Classes
                 }
             }
             return thickness;
-        }
-
-        public string WindowsString(string utfString)
-        {
-            Encoding srcEncodingFormat = Encoding.UTF8;
-            Encoding dstEncodingFormat = Encoding.GetEncoding(1251);
-
-            byte[] originalByteString = srcEncodingFormat.GetBytes(utfString);
-            byte[] convertedByteString = Encoding.Convert(srcEncodingFormat, dstEncodingFormat, originalByteString);
-
-            string finalString = dstEncodingFormat.GetString(convertedByteString);
-            return finalString;
         }
 
         //public string GetReportsDirectory()

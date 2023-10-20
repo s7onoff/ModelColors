@@ -1,13 +1,13 @@
-﻿<Window x:Class="RCModelColors.Views.ColorPicker"
+﻿<Window x:Class="ModelColors.Views.ColorPicker"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RCModelColors.Views"
-        xmlns:vm="clr-namespace:RCModelColors.ViewModels"
-        xmlns:uc="clr-namespace:RCModelColors.Controls"
+        xmlns:local="clr-namespace:ModelColors.Views"
+        xmlns:vm="clr-namespace:ModelColors.ViewModels"
+        xmlns:uc="clr-namespace:ModelColors.Controls"
         mc:Ignorable="d"
-        Title="RC Model ColorPicker" Height="160" Width="250" MinHeight="150" WindowStyle="None" WindowStartupLocation="CenterOwner">
+        Title="Model ColorPicker" Height="160" Width="250" MinHeight="150" WindowStyle="None" WindowStartupLocation="CenterOwner">
     
     <Window.Resources>
         <vm:ColorPickerVM x:Key="vm"/>
@@ -38,7 +38,7 @@
             <Setter Property="RadiusY" Value="10"/>
         </Style>
         <Style x:Key="ColorValuesText" TargetType="TextBlock"
-               BasedOn="{StaticResource DefaultText}" >
+               BasedOn="{StaticResource LightText}" >
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Margin" Value="0,0,4,0"/>
             <Setter Property="FontSize" Value="15" />
@@ -146,8 +146,8 @@
         <Rectangle Fill="{Binding RGBColor}" Style="{StaticResource BottomButton}" 
                    Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Cursor="Hand" PreviewMouseLeftButtonDown="TickButton_Click"/>
         <Viewbox Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Margin="0,10" >
-            <TextBlock Text="✓" Foreground="{Binding RGBAntiColor}" FontWeight="Bold" PreviewMouseLeftButtonDown="TickButton_Click" Cursor="Hand"/>
+            <TextBlock Text="✓" Style="{StaticResource LightText}" Foreground="{Binding RGBAntiColor}" FontWeight="Bold" PreviewMouseLeftButtonDown="TickButton_Click" Cursor="Hand"/>
         </Viewbox>
-        <TextBlock Text="{Binding MyID}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" FontSize="7" VerticalAlignment="Bottom" Margin="0,0,0,-1" Foreground="Black" FontWeight="Light"/>
+        <TextBlock Text="{Binding MyID}" Style="{StaticResource LightText}" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" FontSize="7" VerticalAlignment="Bottom" Margin="0,0,0,-1" Foreground="Black" FontWeight="Light"/>
     </Grid>
 </Window>

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using RCModelColors.Classes;
+using ModelColors.Classes;
 
-namespace RCModelColors.ViewModels
+namespace ModelColors.ViewModels
 {
     public class MainWindowVM : INotifyPropertyChanged
     {
@@ -186,6 +186,19 @@ namespace RCModelColors.ViewModels
             }
         }
 
+        private string encoding;
+
+        public string ThisPCEncoding
+        {
+            get { return encoding; }
+            set 
+            { 
+                encoding = value; 
+                OnPropertyChanged(nameof(ThisPCEncoding));
+            }
+        }
+
+
         #endregion
 
         #region Methods
@@ -214,7 +227,7 @@ namespace RCModelColors.ViewModels
 
         public MainWindowVM()
         {
-            FilterName = "RC_Profile_Colors";
+            FilterName = "Colors_by_Profile";
             PlatesPrefixes = "BL, BPL, FB, FL, FLT, FPL, PL, PLATE, —, ПВ, Полоса, Риф, ЧРиф";
             IgnoredPrefixes = "NUT, WASHER";
 
@@ -231,6 +244,8 @@ namespace RCModelColors.ViewModels
             ShuffleColors = new ShuffleColorsCommand(this);
             CreateModelFilter = new CreateModelFilterCommand(this);
 
+            ThisPCEncoding = TeklaInteraction.ThisPCEncoding.CodePage.ToString();
+
             if (TeklaInteraction.Connect())
             {
                 TeklaModelPath = TeklaInteraction.ModelPath;
@@ -242,7 +257,7 @@ namespace RCModelColors.ViewModels
                 // Check what version of Tekla needed:
                 string teklaFullVersion = typeof(Tekla.Structures.Model.Model).Assembly.GetName().Version.ToString();
                 string teklaVersion = teklaFullVersion.Substring(0,4) + ((teklaFullVersion[5] == '1') ? "i" : "");
-                TeklaModelName = "Cannot connect to Tekla Structures v." + teklaVersion;
+                TeklaModelName = String.Concat("Cannot connect to Tekla Structures v", teklaVersion.ToString());
             }
 
             if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))

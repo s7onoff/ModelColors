@@ -1,0 +1,9 @@
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\ModelColors.csproj.AssemblyReference.cache
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\ModelColors.csproj.SuggestedBindingRedirects.cache
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\Controls\PropItemControl.g.cs
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\Views\MainWindow.g.cs
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\Views\ColorPicker.g.cs
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\App.g.cs
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\GeneratedInternalTypeHelper.g.cs
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\ModelColors_MarkupCompile.cache
+C:\Users\flood\fleet\ModelColors\ObjDir\2017i\ModelColors\ModelColors_MarkupCompile.lref

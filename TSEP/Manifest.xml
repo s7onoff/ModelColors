@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TEP Version="2.0">
-	<Product Id="RCModelColors"
+	<Product Id="ModelColors"
 	UpgradeCode="0FFC014F-4FE8-451C-ADD9-ACA4E4F47BB7"
-	Version="1.3" 
+	Version="1.49" 
 	Language="1033"
-	Name="RCModelColors" 
-	Manufacturer="Renaissance Construction Project"
+	Name="ModelColors" 
+	Manufacturer="None"
 	Description= "Application that helps to colorize your model by cross-sections"
 	IconPath="%TEPDEFINITIONFILEFOLDER%\Icon.png"
 	Type="Extension">
 		<TeklaVersions>
-			<TeklaVersion Name="2019.1"/>
-			<MinTeklaVersion Name="2017.1"/>
+			<TeklaVersion Name="2018.1"/>
+			<MinTeklaVersion Name="2018.1"/>
 			<MaxTeklaVersion Name="2099.1"/>
 		</TeklaVersions>
 	</Product>
@@ -24,16 +24,16 @@
 
 	<TargetPathVariables>		
 		<PathVariable Id="ExtensionsDir" Value="%commonEnvFolder%\extensions\"/>
-		<PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\RCModelColors\"/>
+		<PathVariable Id="BinariesTargetDirectory" Value="%ExtensionsDir%\ModelColors\"/>
 		<PathVariable Id="BitmapsDirectory" Value="%ENVDIR%\..\bitmaps\"/>
 		<PathVariable Id="CommonMacroDirectory" Value="%commonEnvFolder%\macros\modeling\"/>
 	</TargetPathVariables>
 
 	<Component Id="TheExtensionComponent" Guid="4C45E702-3439-439B-A9E3-29F233E85053">
-		<File Id="RCModelColors" Source="%BinariesFolder%\*.*" Target="%BinariesTargetDirectory%" Recursive="yes"/>
-		<File Id="MacroIcon" Source="%MacroFolder%\RCModelColors.bmp" Target="%BitmapsDirectory%"/>
-		<File Id="Macro" Source="%MacroFolder%\RCModelColors.cs" Target="%CommonMacroDirectory%"/>
-		<File Id="MacroCatalogIcon" Source="%MacroFolder%\RCModelColors.bmp" Target="%CommonMacroDirectory%"/>
+		<File Id="ModelColors" Source="%BinariesFolder%\*.*" Target="%BinariesTargetDirectory%" Recursive="yes"/>
+		<File Id="MacroIcon" Source="%MacroFolder%\ModelColors.bmp" Target="%BitmapsDirectory%"/>
+		<File Id="Macro" Source="%MacroFolder%\ModelColors.cs" Target="%CommonMacroDirectory%"/>
+		<File Id="MacroCatalogIcon" Source="%MacroFolder%\ModelColors.bmp" Target="%CommonMacroDirectory%"/>
 	</Component>
 
 	<Feature Id="TheExtensionFeature" Title="ExtensionFeature">

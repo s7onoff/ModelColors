@@ -1,0 +1,55 @@
+template _tmp_0
+{
+    name = "tpled_template";
+    type = TEXTUAL;
+    width = 34;
+    maxheight = 4000;
+    columns = (1, 1);
+    gap = 0;
+    fillpolicy = EVEN;
+    filldirection = HORIZONTAL;
+    fillstartfrom = TOPLEFT;
+    margins = (1, 1, 1, 1);
+    gridxspacing = 1;
+    gridyspacing = 1;
+    version = 4.1;
+    notes = "";
+
+    row _tmp_1
+    {
+        name = "PART";
+        height = 1;
+        visibility = TRUE;
+        usecolumns = FALSE;
+        rule = "";
+        contenttype = "PART";
+        sorttype = COMBINE;
+
+        valuefield _tmp_2
+        {
+            name = "PROFILE_field";
+            location = (2, 0);
+            formula = "GetValue(\"PROFILE\")";
+            maxnumoflines = 1;
+            datatype = STRING;
+            class = "";
+            cacheable = TRUE;
+            formatzeroasempty = FALSE;
+            justify = LEFT;
+            visibility = TRUE;
+            angle = 0;
+            length = 50;
+            decimals = 0;
+            sortdirection = ASCENDING;
+            fontname = "GOST type A";
+            fontcolor = 153;
+            fonttype = 2;
+            fontsize = 3.5;
+            fontratio = 1;
+            fontstyle = 0;
+            fontslant = 0;
+            pen = -1;
+            oncombine = NONE;
+        };
+    };
+};

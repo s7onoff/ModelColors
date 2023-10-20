@@ -1,14 +1,11 @@
 ﻿using ColorMine.ColorSpaces;
-using SQLite;
 using System;
 
-namespace RCModelColors.Classes
+namespace ModelColors.Classes
 {
     public class PropItem
     {
         private string name;
-
-        [PrimaryKey]
 
         public string Name
         {

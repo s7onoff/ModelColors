@@ -1,10 +1,10 @@
-﻿using RCModelColors.Classes;
-using RCModelColors.Views;
+﻿using ModelColors.Classes;
+using ModelColors.Views;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace RCModelColors.Controls
+namespace ModelColors.Controls
 {
     /// <summary>
     /// Interaction logic for PropItemControl.xaml

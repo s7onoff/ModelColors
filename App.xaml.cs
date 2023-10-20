@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace RCModelColors
+namespace ModelColors
 {
     /// <summary>
     /// Interaction logic for App.xaml

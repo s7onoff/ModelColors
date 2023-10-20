@@ -1,13 +1,13 @@
-﻿<Window x:Class="RCModelColors.Views.MainWindow"
+﻿<Window x:Class="ModelColors.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RCModelColors.Views"
-        xmlns:vm="clr-namespace:RCModelColors.ViewModels"
-        xmlns:uc="clr-namespace:RCModelColors.Controls"
+        xmlns:local="clr-namespace:ModelColors.Views"
+        xmlns:vm="clr-namespace:ModelColors.ViewModels"
+        xmlns:uc="clr-namespace:ModelColors.Controls"
         mc:Ignorable="d"
-        Title="RC Model Color" Height="450" Width="500"
+        Title="Model Colors by Profile" Height="450" Width="500"
         MinHeight="200.0" MinWidth="300.0"
         >
     <Window.Resources>
@@ -17,10 +17,10 @@
           DataContext="{StaticResource vm}">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.3,0" 
-                                 StartPoint="1,0.9">
-                <GradientStop Color="#FF88A7D0" Offset="0"/>
-                <GradientStop Color="#FF88A7D0" Offset="0.1"/>
-                <GradientStop Color="#FF0E4EA3" Offset="1"/>
+                                 StartPoint="1,0.8">
+                <GradientStop Color="#FF87DFD4" Offset="0"/>
+                <GradientStop Color="#FF27C9C9" Offset="0.1"/>
+                <GradientStop Color="#FF064A4A" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
@@ -34,23 +34,36 @@
               Margin="7,3"
               Height="60">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
-            
-            <Image Source="..\Images\RC_White.png"  Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBlock Grid.Column="1" Text="Sergey Semenov" Foreground="White"/>
-             
+
+            <StackPanel Grid.Column="0" VerticalAlignment="Bottom" Margin="0,0,0,2">
+                <TextBlock  
+                    Text="Model Colors by Profile" 
+                    Style="{StaticResource LightText}"
+                    Foreground="White" FontSize="13"/>
+                <Border BorderThickness="4"/>
+                <TextBlock Text="v1.49"  Style="{StaticResource LightText}" Foreground="White" FontSize="10"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock  Text="Created by:"  Style="{StaticResource LightText}" Foreground="White" FontSize="10"/>
+                <Border BorderThickness="3"/>
+                <TextBlock Text="Sergey Semenov"  Style="{StaticResource LightText}" Foreground="White" FontSize="13"/>
+            </StackPanel>
+
             <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock Text="{Binding ThisPCEncoding}" Style="{StaticResource LightText}" FontSize="6" HorizontalAlignment="Right"/>
                 <TextBlock Text="{Binding TeklaModelPath}" 
-                           FontSize="10"/>
-                <TextBlock Text="{Binding TeklaModelName}" />
+                           FontSize="10" Style="{StaticResource LightText}"/>
+                <TextBlock Text="{Binding TeklaModelName}" Style="{StaticResource LightText}"/>
             </StackPanel>
         </Grid>
         <Grid x:Name="buttonsGrid" 
               Grid.Row="1"
-              Background="#AA0A2C5A"
+              Background="#AA0A3A5A"
               Margin="7,3"
               Height="100">
             <Grid.ColumnDefinitions>
@@ -65,24 +78,25 @@
                 </Grid.RowDefinitions>
                 <Button
                     Grid.Row="0"
-                    Command="{Binding ReadWholeModel}">
-                    <TextBlock Text="Read profiles from whole model"
-                               />
+                    Command="{Binding ReadWholeModel}"
+                    ToolTip="Create profile list from all the elements in the model">
+                    <TextBlock Text="Read profiles from whole model" Style="{StaticResource LightText}"/>
                 </Button>
                 <Button                   
                     Grid.Row="1"
                     Command="{Binding ReadSelectedElements}"
-                >
-                    <TextBlock Text="Read profiles from selected elements"/>
+                    ToolTip="Create profile list from only elements that are currently selected">
+                    <TextBlock Text="Read profiles from selected elements" Style="{StaticResource LightText}"/>
                 </Button>
             </Grid>
             <Button
                 Grid.Column="1"
                 Grid.RowSpan="2"
                 Command="{Binding ShuffleColors}"
+                ToolTip="Create different colors randomly. Press it again if you don't like the result. Colors can be adjusted individually for every profile"
                 >
                 <StackPanel>
-                    <TextBlock Text="Shuffle color palette"/>
+                    <TextBlock Text="Shuffle color palette" Style="{StaticResource LightText}"/>
                 </StackPanel>
             </Button>
             <Grid Grid.Column="2">
@@ -101,8 +115,9 @@
                 <Button
                     Grid.Row="1" 
                     Grid.Column="0"
-                    Command="{Binding CreateModelFilter}">
-                    <TextBlock Text="Create model filter"/>
+                    Command="{Binding CreateModelFilter}"
+                    ToolTip="Create a representation filter in model. You can choose it in the model any time">
+                    <TextBlock Text="Create model filter" Style="{StaticResource LightText}"/>
                 </Button>
                 <StackPanel 
                     Grid.Row="1"
@@ -111,15 +126,15 @@
                     <CheckBox 
                         IsChecked="{Binding FilterIsApplied}"/>
                     <TextBlock 
-                        Text="and apply"/>
+                        Text="and apply" Style="{StaticResource LightText}"/>
                 </StackPanel>
             </Grid>
         </Grid>
         <Expander Grid.Row="2"
-                  Background="#AA0A2C5A"
+                  Background="#AA0A3A5A"
                   Margin="7,0">
             <Expander.Header>
-                <TextBlock Text="Settings"/>
+                <TextBlock Text="Settings" Style="{StaticResource LightText}"/>
             </Expander.Header>
             <StackPanel>
                 <Grid Margin="7,3"
@@ -129,15 +144,18 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Plates Prefixes" Grid.Column="0"/>
+                    <TextBlock Text="Plates Prefixes" Grid.Column="0" Style="{StaticResource LightText}"
+                               ToolTip="Elements with these prefixes will be considered as plates (profile = thickness)" />
                     <TextBox Grid.Column="1"
                              Text="{Binding PlatesPrefixes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                              TextWrapping="Wrap"
                              HorizontalScrollBarVisibility="Hidden"
-                             HorizontalAlignment="Stretch" Margin="1"/>
-                    <StackPanel Grid.Column="2">
+                             HorizontalAlignment="Stretch" Margin="1"
+                             ToolTip="Elements with these prefixes will be considered as plates (profile = thickness)"/>
+                    <StackPanel Grid.Column="2"
+                                ToolTip="Check this to ignore plates elements (considering prefixes)">
                         <CheckBox IsChecked="{Binding PlatesIgnored}"/>
-                        <TextBlock Text="ignore plates"/>
+                        <TextBlock Text="ignore plates" FontSize="12" Style="{StaticResource LightText}"/>
                     </StackPanel>
                 </Grid>
                 <Grid Margin="7,1"
@@ -147,15 +165,18 @@
                         <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Ignored Prefixes" Grid.Column="0" />
+                    <TextBlock Text="Ignored Prefixes" Grid.Column="0"  Style="{StaticResource LightText}"
+                               ToolTip="Elements with these prefixes will be ignored (nevertheless if checkbox on the right is applied or not)"/>
                     <TextBox Grid.Column="1"
                              Text="{Binding IgnoredPrefixes, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                              TextWrapping="Wrap"
                              HorizontalScrollBarVisibility="Hidden"
-                             HorizontalAlignment="Stretch" Margin="1,8"/>
-                    <StackPanel Grid.Column="2">
+                             HorizontalAlignment="Stretch" Margin="1,8"
+                             ToolTip="Elements with these prefixes will be ignored (nevertheless if checkbox on the right is applied or not)"/>
+                    <StackPanel Grid.Column="2"
+                                ToolTip="Check this to ignore ALL the non-plates elements">
                         <CheckBox IsChecked="{Binding BeamsIgnored}"/>
-                        <TextBlock Text="ignore all beams"/>
+                        <TextBlock Text="only plates (ignore all beams)" FontSize="12" Style="{StaticResource LightText}"/>
                     </StackPanel>
                 </Grid>
 
@@ -170,8 +191,8 @@
                         <RowDefinition/>
                         <RowDefinition Height="20"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Text="Saturation" Grid.Column="0" Grid.Row="0"/>
-                    <TextBlock Text="Lightness" Grid.Column="1" Grid.Row="0"/>
+                    <TextBlock Text="Saturation" Grid.Column="0" Grid.Row="0" Style="{StaticResource LightText}"/>
+                    <TextBlock Text="Lightness" Grid.Column="1" Grid.Row="0" Style="{StaticResource LightText}"/>
                     <Slider Value="{Binding Saturation, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                             Maximum="100" Minimum="0"
                             LostMouseCapture="ColorSlider_LostMouseCapture"
@@ -181,7 +202,9 @@
                             Grid.Column="0"
                             Grid.Row="1"
                             Margin="2,0"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            BorderBrush="Black"
+                            BorderThickness="1">
                     </Slider>
                     <Slider Value="{Binding Lightness, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                             Maximum="100" Minimum="0"
@@ -192,7 +215,9 @@
                             Grid.Column="1"
                             Grid.Row="1"
                             Margin="2,0"
-                            VerticalAlignment="Center">
+                            VerticalAlignment="Center"
+                            BorderBrush="Black"
+                            BorderThickness="1">
                     </Slider>
 
                 </Grid>
@@ -201,7 +226,7 @@
         </Expander>
         <ListView x:Name="PropItemListView" 
                       Margin="7,3" 
-                      Background="#AA0A2C5A"
+                      Background="#AA0A3A5A"
                       Grid.Row="3"
                   ItemsSource="{Binding PropItems}"
                   ScrollViewer.CanContentScroll="True"

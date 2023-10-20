@@ -1,9 +1,0 @@
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\RCModelColors.csprojAssemblyReference.cache
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\Controls\PropItemControl.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\Views\MainWindow.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\Views\ColorPicker.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\App.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\RCModelColors_Content.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\GeneratedInternalTypeHelper.g.cs
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\RCModelColors_MarkupCompile.cache
-C:\Users\s77\source\repos\RCModelColors\ObjDir\2016i\RCModelColors\RCModelColors_MarkupCompile.lref
